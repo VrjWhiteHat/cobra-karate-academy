@@ -1,4 +1,5 @@
-export const academyImage = "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=1800&q=85";
+export const logoImage = "/manus-storage/cobra-academy-logo_46982f77.png";
+export const academyImage = "/manus-storage/cobra-hero-kata-a_56be9fa6.jpg";
 export const trainingImage = "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=900&q=80";
 export const kataImage = "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=80";
 export const coachImage = "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=1000&q=85";

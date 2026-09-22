@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { ArrowDownRight, ArrowUpRight, Check, ChevronRight, Instagram, Menu, X } from "lucide-react";
-import { academyImage, achievements, announcements, coachImage, gallery, kataImage, trainingPrograms } from "@/academy-data";
+import { academyImage, achievements, announcements, coachImage, gallery, kataImage, logoImage, trainingPrograms } from "@/academy-data";
 
 const navItems = ["Academy", "Training", "Achievements", "Gallery", "Coach"];
 
-function Mark({ light = false }: { light?: boolean }) {
-  return <div className={`flex items-center gap-3 ${light ? "text-white" : "text-[#f5f2ed]"}`}><div className="flex h-9 w-9 items-center justify-center rounded-full border border-[#cf3b31] text-lg font-black text-[#cf3b31]">C</div><div className="leading-none"><div className="display text-[1.15rem] font-extrabold tracking-[.08em]">COBRA</div><div className="text-[.48rem] font-bold tracking-[.3em] text-[#a3a0a0]">KARATE ACADEMY</div></div></div>;
+function Mark() {
+  return <div className="flex items-center gap-3"><img src={logoImage} alt="The Cobra Karate Academy" className="h-12 w-12 object-contain" /><div className="leading-none"><div className="display text-[1.05rem] font-extrabold tracking-[.08em]">THE COBRA</div><div className="text-[.48rem] font-bold tracking-[.26em] text-[#a3a0a0]">KARATE ACADEMY</div></div></div>;
 }
 
 function SectionHeading({ kicker, title, copy, align = "left" }: { kicker: string; title: string; copy?: string; align?: "left" | "right" }) {
@@ -48,6 +48,6 @@ export default function Home() {
 
       <section id="contact" className="border-t border-white/10 px-5 py-20 lg:px-10"><div className="mx-auto flex max-w-[1400px] flex-col justify-between gap-10 md:flex-row md:items-end"><div><div className="section-kicker">07 / Contact</div><h2 className="display mt-4 text-5xl font-bold uppercase">Ready when you are.</h2><p className="mt-4 max-w-md text-sm leading-6 text-[#979294]">Official contact details are intentionally left editable. Add your dojo address, phone number and email in the settings panel.</p></div><div className="flex gap-3"><Link href="/attendance" className="btn-press inline-flex items-center gap-3 bg-white px-5 py-3 text-xs font-bold uppercase tracking-[.16em] text-[#0b0b0c]">Check attendance <ArrowUpRight size={15} /></Link><a href="#top" className="btn-press border border-white/20 p-3 hover:border-white" aria-label="Back to top"><ArrowUpRight size={17} /></a></div></div></section>
     </main>
-    <footer className="border-t border-white/10 bg-[#070708] px-5 py-7 lg:px-10"><div className="mx-auto flex max-w-[1400px] flex-col justify-between gap-5 text-[.62rem] font-bold uppercase tracking-[.18em] text-[#777376] sm:flex-row"><div>© 2026 THE COBRA KARATE ACADEMY</div><div className="flex items-center gap-5"><span>Placeholder academy content</span><Instagram size={15} /></div></div></footer>
+    <footer className="border-t border-white/10 bg-[#070708] px-5 py-7 lg:px-10"><div className="mx-auto flex max-w-[1400px] flex-col justify-between gap-5 text-[.62rem] font-bold uppercase tracking-[.18em] text-[#777376] sm:flex-row"><div>© 2026 THE COBRA KARATE ACADEMY</div><div className="flex items-center gap-5"><Link href="/admin" className="text-[#cf3b31] transition hover:text-white">Coach login</Link><span>Official academy portal</span><Instagram size={15} /></div></div></footer>
   </div>;
 }

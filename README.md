@@ -11,6 +11,8 @@ A responsive, dark cinematic website for **The Cobra Karate Academy** with publi
 - Admin-only tRPC procedures for student management and attendance updates.
 - Attendance uniqueness enforced by `studentId + date + session` to prevent duplicates.
 - Dark charcoal, deep red, and white visual system with responsive mobile navigation.
+- Official academy logo and a cinematic kata hero background served from project storage.
+- Coach credentials are configured as server-side `COACH_USERNAME` and `COACH_PASSWORD` secrets; they are never committed to the repository or bundled into the frontend.
 
 Academy names, statistics, achievements, contact details, qualifications, and student records are intentionally placeholders. Replace them with official information before launch.
 
@@ -31,6 +33,7 @@ The full-stack WebDev template expects these environment variables to be configu
 - `JWT_SECRET` — session signing secret.
 - `VITE_APP_ID`, `OAUTH_SERVER_URL`, `VITE_OAUTH_PORTAL_URL` — Manus OAuth settings.
 - `OWNER_OPEN_ID`, `OWNER_NAME` — project owner identity; the owner is promoted to admin by the auth bootstrap.
+- `COACH_USERNAME`, `COACH_PASSWORD` — credentials for the private coach portal. Configure these through the project secret manager.
 
 To generate a migration after changing `drizzle/schema.ts`:
 
@@ -67,4 +70,4 @@ gh repo create cobra-karate-academy --private --source . --remote origin --push
 
 ## Notes for production
 
-The preview login gate is intentionally simple for local demonstration. Production admin access should use the existing Manus OAuth session and the server-side `adminProcedure` checks. The public attendance page should use the `attendance.lookup` tRPC procedure once student records have been added through the admin workflow.
+The coach login is verified server-side and establishes an HTTP-only signed coach session. Production admin procedures accept either this coach session or the existing Manus OAuth admin identity. The public attendance page should use the `attendance.lookup` tRPC procedure once student records have been added through the admin workflow.

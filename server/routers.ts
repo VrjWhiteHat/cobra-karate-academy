@@ -4,6 +4,7 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { adminProcedure, publicProcedure, router } from "./_core/trpc";
 import { createStudent, findStudentWithAttendance, getAttendanceStats, listStudents, saveAttendance, setStudentStatus } from "./db";
+import { COACH_SESSION_COOKIE, createCoachSession, validateCoachCredentials } from "./coach-auth";
 
 const attendanceStatus = z.enum(["present", "absent", "late"]);
 
@@ -12,6 +13,17 @@ export const appRouter = router({
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => { const cookieOptions = getSessionCookieOptions(ctx.req); ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 }); return { success: true } as const; }),
+  }),
+  coach: router({
+    login: publicProcedure.input(z.object({ username: z.string().min(1), password: z.string().min(1) })).mutation(({ input, ctx }) => {
+      if (!validateCoachCredentials(input.username, input.password)) return { success: false as const };
+      ctx.res.cookie(COACH_SESSION_COOKIE, createCoachSession(input.username), { ...getSessionCookieOptions(ctx.req), maxAge: 1000 * 60 * 60 * 12 });
+      return { success: true as const };
+    }),
+    logout: publicProcedure.mutation(({ ctx }) => {
+      ctx.res.clearCookie(COACH_SESSION_COOKIE, { ...getSessionCookieOptions(ctx.req), maxAge: -1 });
+      return { success: true as const };
+    }),
   }),
   attendance: router({
     lookup: publicProcedure.input(z.object({ studentId: z.string().min(3).max(32) })).query(({ input }) => findStudentWithAttendance(input.studentId)),
