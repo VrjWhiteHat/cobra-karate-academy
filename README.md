@@ -60,14 +60,4 @@ Create a new private repository, then push the project:
 gh repo create cobra-karate-academy --private --source . --remote origin --push
 ```
 
-## Vercel
-
-1. Import the GitHub repository into Vercel.
-2. Add the environment variables listed above in the Vercel project settings.
-3. Keep the project build command as `pnpm build` and the start command as `pnpm start` if Vercel asks for them.
-4. Configure the OAuth callback URL for the deployed domain through the Manus OAuth project settings.
-5. Run the database migration against the production database before enabling live attendance management.
-
-## Notes for production
-
-The coach login is verified server-side and establishes an HTTP-only signed coach session. Production admin procedures accept either this coach session or the existing Manus OAuth admin identity. The public attendance page should use the `attendance.lookup` tRPC procedure once student records have been added through the admin workflow.
+##Made by Vrj❤️
