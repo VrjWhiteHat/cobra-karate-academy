@@ -1,33 +1,53 @@
-import { useAuth } from "@/_core/hooks/useAuth";
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import { Streamdown } from 'streamdown';
+import { useState } from "react";
+import { Link } from "wouter";
+import { ArrowDownRight, ArrowUpRight, Check, ChevronRight, Instagram, Menu, X } from "lucide-react";
+import { academyImage, achievements, announcements, coachImage, gallery, kataImage, trainingPrograms } from "@/academy-data";
 
-/**
- * All content in this page are only for example, replace with your own feature implementation
- * When building pages, remember your instructions in Frontend Workflow, Frontend Best Practices, Design Guide and Common Pitfalls
- */
+const navItems = ["Academy", "Training", "Achievements", "Gallery", "Coach"];
+
+function Mark({ light = false }: { light?: boolean }) {
+  return <div className={`flex items-center gap-3 ${light ? "text-white" : "text-[#f5f2ed]"}`}><div className="flex h-9 w-9 items-center justify-center rounded-full border border-[#cf3b31] text-lg font-black text-[#cf3b31]">C</div><div className="leading-none"><div className="display text-[1.15rem] font-extrabold tracking-[.08em]">COBRA</div><div className="text-[.48rem] font-bold tracking-[.3em] text-[#a3a0a0]">KARATE ACADEMY</div></div></div>;
+}
+
+function SectionHeading({ kicker, title, copy, align = "left" }: { kicker: string; title: string; copy?: string; align?: "left" | "right" }) {
+  return <div className={align === "right" ? "text-right" : ""}><div className="section-kicker mb-4">{kicker}</div><h2 className="section-title text-balance">{title}</h2>{copy && <p className="mt-6 max-w-xl text-sm leading-7 text-[#aaa6a5]">{copy}</p>}</div>;
+}
+
 export default function Home() {
-  // The useAuth hook provides authentication state.
-  // To implement login/logout, call logout(), or start login from an event
-  // handler: onClick={() => startLogin()} (imported from "@/const"). Never call
-  // startLogin() during render (no href={startLogin()}) — it mints a one-time
-  // nonce cookie and must run only at the moment of navigation.
-  let { user, loading, error, isAuthenticated, logout } = useAuth();
+  const [open, setOpen] = useState(false);
+  const [galleryFilter, setGalleryFilter] = useState("ALL");
+  const filteredGallery = galleryFilter === "ALL" ? gallery : gallery.filter(item => item.category === galleryFilter);
+  const scrollTo = (id: string) => { document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }); setOpen(false); };
 
-  // If theme is switchable in App.tsx, we can implement theme toggling like this:
-  // const { theme, toggleTheme } = useTheme();
+  return <div className="min-h-screen overflow-hidden bg-[#0b0b0c] text-[#f5f2ed]">
+    <header className="absolute inset-x-0 top-0 z-40 border-b border-white/10 bg-[#0b0b0c]/60 backdrop-blur-md">
+      <div className="mx-auto flex h-20 max-w-[1400px] items-center justify-between px-5 lg:px-10"><button onClick={() => scrollTo("top")} aria-label="Back to top"><Mark /></button>
+        <nav className="hidden items-center gap-8 lg:flex">{navItems.map(item => <button key={item} onClick={() => scrollTo(item === "Academy" ? "academy" : item.toLowerCase())} className="text-[.68rem] font-bold uppercase tracking-[.2em] text-[#b0abad] transition hover:text-white">{item}</button>)}<Link href="/attendance" className="btn-press ml-2 inline-flex items-center gap-2 border border-[#cf3b31] px-4 py-2.5 text-[.68rem] font-bold uppercase tracking-[.16em] text-white hover:bg-[#cf3b31]">Attendance <ArrowUpRight size={14} /></Link></nav>
+        <button onClick={() => setOpen(!open)} className="lg:hidden" aria-label="Toggle menu">{open ? <X /> : <Menu />}</button>
+      </div>
+      {open && <div className="border-t border-white/10 bg-[#111113] px-5 py-5 lg:hidden">{navItems.map(item => <button key={item} onClick={() => scrollTo(item === "Academy" ? "academy" : item.toLowerCase())} className="block w-full border-b border-white/10 py-4 text-left text-sm font-bold uppercase tracking-[.15em] text-white">{item}</button>)}<Link href="/attendance" className="mt-5 flex items-center justify-between bg-[#cf3b31] px-4 py-3 text-sm font-bold uppercase tracking-[.15em]">Check attendance <ArrowUpRight size={16} /></Link></div>}
+    </header>
 
-  return (
-    <div className="min-h-screen flex flex-col">
-      <main>
-        {/* Example: lucide-react for icons */}
-        <Loader2 className="animate-spin" />
-        Example Page
-        {/* Example: Streamdown for markdown rendering */}
-        <Streamdown>Any **markdown** content</Streamdown>
-        <Button variant="default">Example Button</Button>
-      </main>
-    </div>
-  );
+    <main id="top">
+      <section className="relative flex min-h-[760px] items-end overflow-hidden border-b border-white/10 pt-32 lg:min-h-[820px] lg:items-center">
+        <img src={academyImage} alt="Martial artist training in a dark dojo" className="absolute inset-0 h-full w-full object-cover opacity-45" /><div className="absolute inset-0 bg-gradient-to-r from-[#0b0b0c] via-[#0b0b0c]/75 to-transparent" /><div className="absolute inset-0 bg-gradient-to-t from-[#0b0b0c] via-transparent to-[#0b0b0c]/50" /><div className="absolute right-[-5%] top-[18%] hidden select-none font-display text-[22rem] font-black leading-none text-white/[.025] lg:block">拳</div>
+        <div className="relative mx-auto w-full max-w-[1400px] px-5 pb-20 lg:px-10 lg:pb-0"><div className="max-w-3xl"><div className="reveal section-kicker mb-7 flex items-center gap-3"><span className="h-px w-12 bg-[#cf3b31]" /> THE COBRA KARATE ACADEMY</div><h1 className="reveal reveal-delay-1 display max-w-4xl text-[4.5rem] font-black uppercase leading-[.82] tracking-[-.04em] text-white sm:text-[6.8rem] lg:text-[9.2rem]">Discipline.<br /><span className="text-[#cf3b31]">Power.</span><br />Precision.</h1><p className="reveal reveal-delay-2 mt-8 max-w-md text-base leading-7 text-[#c4c0be]">Where discipline becomes your strongest weapon. Train with intent. Move with purpose. Build the version of you that does not fold.</p><div className="reveal reveal-delay-3 mt-9 flex flex-wrap gap-3"><button onClick={() => scrollTo("academy")} className="btn-press inline-flex items-center gap-5 bg-[#cf3b31] px-6 py-4 text-xs font-bold uppercase tracking-[.18em] text-white hover:bg-[#e14b40]">Explore academy <ArrowDownRight size={16} /></button><button onClick={() => scrollTo("training")} className="btn-press inline-flex items-center gap-5 border border-white/25 px-6 py-4 text-xs font-bold uppercase tracking-[.18em] text-white hover:border-white">Our training <ArrowDownRight size={16} /></button></div></div><div className="mt-16 flex items-end justify-between border-t border-white/15 pt-5 lg:absolute lg:bottom-[-110px] lg:left-10 lg:right-10 lg:mt-0"><div className="text-[.64rem] font-bold uppercase tracking-[.22em] text-[#918d8e]">Est. / Placeholder academy info<br /><span className="text-white">Built for the relentless</span></div><div className="hidden items-center gap-3 text-[.64rem] font-bold uppercase tracking-[.2em] text-[#918d8e] sm:flex"><span className="h-8 w-8 rounded-full border border-white/20 p-2"><ArrowDownRight size={14} /></span> Scroll to enter</div></div></div>
+      </section>
+
+      <section id="academy" className="grid-noise relative mx-auto max-w-[1400px] px-5 py-28 lg:px-10 lg:py-40"><div className="grid gap-14 lg:grid-cols-[1fr_1.15fr] lg:items-end"><div><SectionHeading kicker="01 / The academy" title="The dojo is a mirror." copy="A modern martial-arts academy for people who want more from their training. No noise. No shortcuts. Just a clear standard, repeated until it becomes who you are." /><div className="mt-10 grid max-w-md grid-cols-2 gap-4 border-t border-white/15 pt-6"><div><div className="display text-4xl font-bold">05</div><div className="mt-1 text-[.64rem] uppercase tracking-[.18em] text-[#979295]">Training disciplines</div></div><div><div className="display text-4xl font-bold">01</div><div className="mt-1 text-[.64rem] uppercase tracking-[.18em] text-[#979295]">Clear standard</div></div></div></div><div className="relative ml-auto max-w-xl"><div className="absolute -left-6 -top-6 h-24 w-24 border-l border-t border-[#cf3b31]" /><img src={kataImage} alt="Karate training pose" className="aspect-[4/3] w-full object-cover grayscale-[.35]" /><div className="absolute bottom-5 left-5 bg-[#0b0b0c]/90 px-4 py-3 text-[.65rem] font-bold uppercase tracking-[.18em]">Mind / body / edge</div></div></div></section>
+
+      <section id="training" className="border-y border-white/10 bg-[#111113] px-5 py-28 lg:px-10 lg:py-36"><div className="mx-auto max-w-[1400px]"><div className="mb-14 flex flex-col justify-between gap-8 lg:flex-row lg:items-end"><SectionHeading kicker="02 / Training systems" title="Train the whole fighter." copy="Every session has a job. Choose the discipline that matches the edge you are ready to build." /><div className="max-w-xs text-right text-[.65rem] font-bold uppercase leading-6 tracking-[.16em] text-[#8f8b8d]">Scroll / explore<br /><span className="text-[#cf3b31]">05 disciplines</span></div></div><div className="grid gap-px border border-white/10 bg-white/10 md:grid-cols-2 lg:grid-cols-5">{trainingPrograms.map((program, index) => <article key={program.name} className="group min-h-[270px] bg-[#111113] p-6 transition hover:bg-[#1a1a1d]"><div className="flex items-start justify-between"><span className="text-4xl text-[#cf3b31]">{program.icon}</span><span className="text-[.62rem] font-bold tracking-[.15em] text-[#777478]">0{index + 1}</span></div><div className="mt-20"><div className="mb-2 text-[.6rem] font-bold tracking-[.18em] text-[#cf3b31]">{program.tag}</div><h3 className="display text-3xl font-bold uppercase">{program.name}</h3><p className="mt-3 text-xs leading-5 text-[#929093]">{program.copy}</p></div></article>)}</div></div></section>
+
+      <section id="achievements" className="mx-auto max-w-[1400px] px-5 py-28 lg:px-10 lg:py-36"><div className="grid gap-14 lg:grid-cols-[.8fr_1.2fr]"><SectionHeading kicker="03 / Achievements" title="Proof is quiet." copy="Keep the work visible. Add tournament wins, certifications and milestones as the academy writes its record." /><div className="border-t border-white/15">{achievements.map((item, index) => <div key={item.year} className="grid gap-4 border-b border-white/10 py-7 sm:grid-cols-[110px_1fr_24px] sm:items-start"><div className="display text-3xl font-bold text-[#cf3b31]">{item.year}</div><div><h3 className="display text-2xl font-bold uppercase">{item.title}</h3><p className="mt-2 max-w-lg text-sm leading-6 text-[#929093]">{item.detail}</p></div><ChevronRight className="hidden text-[#cf3b31] sm:block" size={18} /></div>)}</div></div></section>
+
+      <section id="gallery" className="border-y border-white/10 bg-[#111113] px-5 py-28 lg:px-10 lg:py-36"><div className="mx-auto max-w-[1400px]"><div className="flex flex-col justify-between gap-8 md:flex-row md:items-end"><SectionHeading kicker="04 / Gallery" title="The moments between." copy="A living archive of the sweat, the stillness and the team around the work." /><div className="flex flex-wrap gap-2">{["ALL", "TRAINING", "COMPETITIONS", "EVENTS"].map(filter => <button key={filter} onClick={() => setGalleryFilter(filter)} className={`btn-press border px-3 py-2 text-[.6rem] font-bold tracking-[.16em] ${galleryFilter === filter ? "border-[#cf3b31] bg-[#cf3b31] text-white" : "border-white/15 text-[#9c9899] hover:border-white"}`}>{filter}</button>)}</div></div><div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{filteredGallery.map((item, index) => <div key={item.title} className={`group relative overflow-hidden ${index === 0 ? "sm:col-span-2 sm:row-span-2" : ""}`}><img src={item.image} alt={item.title} className={`h-full min-h-[220px] w-full object-cover grayscale-[.3] transition duration-500 group-hover:scale-105 group-hover:grayscale-0 ${index === 0 ? "sm:min-h-[480px]" : ""}`} /><div className="absolute inset-0 bg-gradient-to-t from-[#0b0b0c]/90 via-transparent to-transparent" /><div className="absolute bottom-5 left-5"><div className="text-[.6rem] font-bold tracking-[.18em] text-[#cf3b31]">{item.category}</div><div className="display mt-1 text-2xl font-bold uppercase">{item.title}</div></div></div>)}</div></div></section>
+
+      <section id="coach" className="mx-auto max-w-[1400px] px-5 py-28 lg:px-10 lg:py-36"><div className="grid gap-14 lg:grid-cols-[.9fr_1.1fr] lg:items-center"><div className="relative order-2 lg:order-1"><div className="absolute -bottom-6 -right-6 h-32 w-32 border-b border-r border-[#cf3b31]" /><img src={coachImage} alt="Coach portrait placeholder" className="aspect-[4/5] w-full max-w-lg object-cover grayscale-[.25]" /><div className="absolute bottom-5 left-5 bg-[#cf3b31] px-4 py-3"><div className="text-[.6rem] font-bold tracking-[.18em]">THE CPU</div><div className="display text-xl font-bold uppercase">Head Coach</div></div></div><div className="order-1 lg:order-2"><SectionHeading kicker="05 / The coach" title="Stay calm. Stay dangerous." copy="THE CPU is the editable head-coach profile for this academy. Replace the placeholder bio, photo and details with the official story from the admin portal." /><div className="mt-9 grid gap-4 border-t border-white/15 pt-6 sm:grid-cols-3"><div><div className="text-[.6rem] font-bold tracking-[.18em] text-[#cf3b31]">COACH</div><div className="mt-2 text-sm font-bold">THE CPU</div></div><div><div className="text-[.6rem] font-bold tracking-[.18em] text-[#cf3b31]">FOCUS</div><div className="mt-2 text-sm font-bold">Discipline / precision</div></div><div><div className="text-[.6rem] font-bold tracking-[.18em] text-[#cf3b31]">STATUS</div><div className="mt-2 text-sm font-bold">Taking the floor</div></div></div></div></div></section>
+
+      <section id="announcements" className="border-t border-white/10 bg-[#cf3b31] px-5 py-24 text-[#0b0b0c] lg:px-10"><div className="mx-auto grid max-w-[1400px] gap-12 lg:grid-cols-[.75fr_1.25fr]"><div><div className="section-kicker !text-[#0b0b0c]/60">06 / From the dojo</div><h2 className="section-title mt-4">Keep showing up.</h2><p className="mt-7 max-w-sm text-sm leading-7 text-[#0b0b0c]/70">Announcements and academy notes will appear here. Admins can publish, edit and remove updates from the coach portal.</p></div><div>{announcements.map(item => <article key={item.title} className="border-t border-[#0b0b0c]/20 py-6"><div className="text-[.62rem] font-bold tracking-[.18em] text-[#0b0b0c]/60">{item.date}</div><div className="mt-2 flex flex-col justify-between gap-4 sm:flex-row"><h3 className="display text-3xl font-bold uppercase">{item.title}</h3><p className="max-w-sm text-sm leading-6 text-[#0b0b0c]/70">{item.copy}</p></div></article>)}</div></div></section>
+
+      <section id="contact" className="border-t border-white/10 px-5 py-20 lg:px-10"><div className="mx-auto flex max-w-[1400px] flex-col justify-between gap-10 md:flex-row md:items-end"><div><div className="section-kicker">07 / Contact</div><h2 className="display mt-4 text-5xl font-bold uppercase">Ready when you are.</h2><p className="mt-4 max-w-md text-sm leading-6 text-[#979294]">Official contact details are intentionally left editable. Add your dojo address, phone number and email in the settings panel.</p></div><div className="flex gap-3"><Link href="/attendance" className="btn-press inline-flex items-center gap-3 bg-white px-5 py-3 text-xs font-bold uppercase tracking-[.16em] text-[#0b0b0c]">Check attendance <ArrowUpRight size={15} /></Link><a href="#top" className="btn-press border border-white/20 p-3 hover:border-white" aria-label="Back to top"><ArrowUpRight size={17} /></a></div></div></section>
+    </main>
+    <footer className="border-t border-white/10 bg-[#070708] px-5 py-7 lg:px-10"><div className="mx-auto flex max-w-[1400px] flex-col justify-between gap-5 text-[.62rem] font-bold uppercase tracking-[.18em] text-[#777376] sm:flex-row"><div>© 2026 THE COBRA KARATE ACADEMY</div><div className="flex items-center gap-5"><span>Placeholder academy content</span><Instagram size={15} /></div></div></footer>
+  </div>;
 }
