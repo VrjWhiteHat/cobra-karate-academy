@@ -1,0 +1,27 @@
+export const defaultSiteContent = {
+  heroEyebrow: "THE COBRA KARATE ACADEMY",
+  heroTitleLine1: "Discipline.",
+  heroTitleLine2: "Power.",
+  heroTitleLine3: "Precision.",
+  heroCopy: "Where discipline becomes your strongest weapon. Train with intent. Move with purpose. Build the version of you that does not fold.",
+  academyTitle: "The dojo is a mirror.",
+  academyCopy: "A modern martial-arts academy for people who want more from their training. No noise. No shortcuts. Just a clear standard, repeated until it becomes who you are.",
+  trainingTitle: "Train the whole fighter.",
+  trainingCopy: "Every session has a job. Choose the discipline that matches the edge you are ready to build.",
+  achievementsTitle: "Proof is quiet.",
+  achievementsCopy: "Keep the work visible. Add tournament wins, certifications and milestones as the academy writes its record.",
+  galleryTitle: "The moments between.",
+  galleryCopy: "A living archive of the sweat, the stillness and the team around the work.",
+  coachName: "THE CPU",
+  coachTitle: "Stay calm. Stay dangerous.",
+  coachCopy: "The coach profile, story and training philosophy can be updated from the private coach portal.",
+  coachFocus: "Discipline / precision",
+  coachStatus: "Taking the floor",
+  announcementsTitle: "Keep showing up.",
+  announcementsCopy: "Announcements and academy notes will appear here. Publish, edit and remove updates from the coach portal.",
+  contactTitle: "Ready when you are.",
+  contactCopy: "Add your official dojo address, phone number, email and social links from the coach portal.",
+  footerLabel: "Official academy portal",
+} as const;
+
+export type SiteContentKey = keyof typeof defaultSiteContent;

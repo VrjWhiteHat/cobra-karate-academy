@@ -13,6 +13,9 @@ A responsive, dark cinematic website for **The Cobra Karate Academy** with publi
 - Dark charcoal, deep red, and white visual system with responsive mobile navigation.
 - Official academy logo and a cinematic kata hero background served from project storage.
 - Coach credentials are configured as server-side `COACH_USERNAME` and `COACH_PASSWORD` secrets; they are never committed to the repository or bundled into the frontend.
+- A protected **Site content** workspace lets the coach edit homepage hero, section, coach, contact, and footer copy without code.
+- The roster supports adding students, switching active/leave-dojo status, and permanently deleting a student together with attendance history.
+- Gallery photos can be selected from the device, uploaded in one click, published with a category/title, and removed from the public gallery.
 
 Academy names, statistics, achievements, contact details, qualifications, and student records are intentionally placeholders. Replace them with official information before launch.
 
@@ -70,4 +73,4 @@ gh repo create cobra-karate-academy --private --source . --remote origin --push
 
 ## Notes for production
 
-The coach login is verified server-side and establishes an HTTP-only signed coach session. Production admin procedures accept either this coach session or the existing Manus OAuth admin identity. The public attendance page should use the `attendance.lookup` tRPC procedure once student records have been added through the admin workflow.
+The coach login is verified server-side and establishes an HTTP-only signed coach session. Production admin procedures accept either this coach session or the existing Manus OAuth admin identity. The public attendance page should use the `attendance.lookup` tRPC procedure once student records have been added through the admin workflow. Uploaded gallery files are stored with `storagePut`; the database stores only their storage URL, and removing a gallery row removes the public reference without attempting to delete the underlying object.

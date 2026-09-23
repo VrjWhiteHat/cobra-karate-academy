@@ -62,6 +62,13 @@ export const announcements = mysqlTable("announcements", {
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
+export const siteContent = mysqlTable("siteContent", {
+  id: int("id").autoincrement().primaryKey(),
+  contentKey: varchar("contentKey", { length: 120 }).notNull().unique(),
+  contentValue: text("contentValue").notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 export type Student = typeof students.$inferSelect;
@@ -70,3 +77,4 @@ export type Attendance = typeof attendance.$inferSelect;
 export type Achievement = typeof achievements.$inferSelect;
 export type GalleryItem = typeof galleryItems.$inferSelect;
 export type Announcement = typeof announcements.$inferSelect;
+export type SiteContent = typeof siteContent.$inferSelect;

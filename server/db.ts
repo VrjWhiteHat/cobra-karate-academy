@@ -1,6 +1,6 @@
 import { and, asc, eq, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, attendance, students, users } from "../drizzle/schema";
+import { InsertUser, announcements, attendance, achievements, galleryItems, siteContent, students, users } from "../drizzle/schema";
 import { ENV } from "./_core/env";
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -60,6 +60,56 @@ export async function createStudent(input: { studentId: string; name: string; be
 export async function setStudentStatus(id: number, status: "active" | "disabled") {
   const db = await getDb(); if (!db) throw new Error("Database not configured");
   await db.update(students).set({ status }).where(eq(students.id, id));
+  return { success: true } as const;
+}
+
+export async function deleteStudent(id: number) {
+  const db = await getDb(); if (!db) throw new Error("Database not configured");
+  await db.delete(attendance).where(eq(attendance.studentId, id));
+  await db.delete(students).where(eq(students.id, id));
+  return { success: true } as const;
+}
+
+export async function getSiteContent() {
+  const db = await getDb(); if (!db) return {};
+  const rows = await db.select().from(siteContent);
+  return Object.fromEntries(rows.map(row => [row.contentKey, row.contentValue]));
+}
+
+export async function updateSiteContent(entries: Record<string, string>) {
+  const db = await getDb(); if (!db) throw new Error("Database not configured");
+  for (const [contentKey, contentValue] of Object.entries(entries)) {
+    await db.insert(siteContent).values({ contentKey, contentValue }).onDuplicateKeyUpdate({ set: { contentValue } });
+  }
+  return { success: true } as const;
+}
+
+export async function listGalleryItems() {
+  const db = await getDb(); if (!db) return [];
+  return db.select().from(galleryItems).orderBy(asc(galleryItems.sortOrder), asc(galleryItems.createdAt));
+}
+
+export async function createGalleryItem(input: { category: string; title: string; imageUrl: string; sortOrder?: number }) {
+  const db = await getDb(); if (!db) throw new Error("Database not configured");
+  await db.insert(galleryItems).values({ ...input, sortOrder: input.sortOrder ?? 0 });
+  return { success: true } as const;
+}
+
+export async function deleteGalleryItem(id: number) {
+  const db = await getDb(); if (!db) throw new Error("Database not configured");
+  await db.delete(galleryItems).where(eq(galleryItems.id, id));
+  return { success: true } as const;
+}
+
+export async function deleteAchievement(id: number) {
+  const db = await getDb(); if (!db) throw new Error("Database not configured");
+  await db.delete(achievements).where(eq(achievements.id, id));
+  return { success: true } as const;
+}
+
+export async function deleteAnnouncement(id: number) {
+  const db = await getDb(); if (!db) throw new Error("Database not configured");
+  await db.delete(announcements).where(eq(announcements.id, id));
   return { success: true } as const;
 }
 

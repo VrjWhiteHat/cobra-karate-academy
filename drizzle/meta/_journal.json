@@ -15,6 +15,13 @@
       "when": 1790095521787,
       "tag": "0001_yellow_norrin_radd",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1790133955214,
+      "tag": "0002_silent_whirlwind",
+      "breakpoints": true
     }
   ]
 }

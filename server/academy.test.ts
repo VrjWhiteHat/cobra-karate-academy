@@ -43,6 +43,16 @@ describe("academy procedures", () => {
     await expect(caller.admin.stats()).rejects.toMatchObject({ code: "FORBIDDEN" });
   });
 
+  it("protects permanent student deletion from unauthenticated users", async () => {
+    const caller = appRouter.createCaller(context());
+    await expect(caller.admin.deleteStudent({ id: 1 })).rejects.toMatchObject({ code: "FORBIDDEN" });
+  });
+
+  it("exposes the public CMS content endpoint", async () => {
+    const caller = appRouter.createCaller(context());
+    await expect(caller.site.content()).resolves.toBeDefined();
+  });
+
   it("allows an admin to read fallback stats when the database is not configured", async () => {
     const caller = appRouter.createCaller(context(admin));
     await expect(caller.admin.stats()).resolves.toEqual({ totalStudents: 0, presentToday: 0, absentToday: 0, attendancePercent: 0 });
