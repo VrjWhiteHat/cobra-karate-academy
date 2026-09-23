@@ -7,8 +7,8 @@ A responsive, dark cinematic website for **The Cobra Karate Academy** with publi
 - Public landing page sections for the academy, training programs, achievements, gallery, coach profile, announcements, and contact.
 - `/attendance` read-only student attendance lookup.
 - `/admin` coach login entry and `/admin/dashboard` management workspace.
-- Full-stack data model for students, attendance, achievements, gallery items, and announcements.
-- Admin-only tRPC procedures for student management and attendance updates.
+- Full-stack data model for students, attendance, achievements, gallery items, announcements, and editable site content.
+- Admin-only tRPC procedures for student management, attendance updates, CMS copy, gallery CRUD, and secure image uploads.
 - Attendance uniqueness enforced by `studentId + date + session` to prevent duplicates.
 - Dark charcoal, deep red, and white visual system with responsive mobile navigation.
 - Official academy logo and a cinematic kata hero background served from project storage.
@@ -57,11 +57,7 @@ pnpm build
 
 ## GitHub
 
-Create a new private repository, then push the project:
-
-```bash
-gh repo create cobra-karate-academy --private --source . --remote origin --push
-```
+The project is maintained in the private repository `VrjWhiteHat/cobra-karate-academy`.
 
 ## Vercel
 
@@ -73,4 +69,6 @@ gh repo create cobra-karate-academy --private --source . --remote origin --push
 
 ## Notes for production
 
-The coach login is verified server-side and establishes an HTTP-only signed coach session. Production admin procedures accept either this coach session or the existing Manus OAuth admin identity. The public attendance page should use the `attendance.lookup` tRPC procedure once student records have been added through the admin workflow. Uploaded gallery files are stored with `storagePut`; the database stores only their storage URL, and removing a gallery row removes the public reference without attempting to delete the underlying object.
+The coach login is verified server-side and establishes an HTTP-only signed coach session. Production admin procedures accept either this coach session or the existing Manus OAuth admin identity. Uploaded gallery files are stored with `storagePut`; the database stores only their storage URL, and removing a gallery row removes the public reference without attempting to delete the underlying object.
+
+## Made by Vrj
